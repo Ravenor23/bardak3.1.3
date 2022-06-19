@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -89,6 +90,15 @@ public class User implements UserDetails {
 
     public List<Role> getRoles() {
         return roles;
+    }
+
+    public String getRolesToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < getRoles().size(); i++) {
+            sb.append(getRoles().get(i));
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 
     public void setRoles(List<Role> roles) {

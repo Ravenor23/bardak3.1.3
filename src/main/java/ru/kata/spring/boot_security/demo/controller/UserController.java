@@ -17,15 +17,16 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserService userService;
+    private User admin;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
+    @GetMapping("/login")
+    public String login() {
+        return "users/login";
     }
 
     @GetMapping("/user")
@@ -44,8 +45,11 @@ public class UserController {
 
     @GetMapping("/admin")
     public String findAll(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        admin = userService.findByUsername(auth.getName());
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
+        model.addAttribute("admin", admin);
         return "users/index";
     }
 
@@ -63,7 +67,8 @@ public class UserController {
     }
 
     @GetMapping("/admin/user-create")
-    public String createUserForm(User user) {
+    public String createUserForm(User user, Model model) {
+        model.addAttribute("admin", admin);
         return "users/saveUser";
     }
 

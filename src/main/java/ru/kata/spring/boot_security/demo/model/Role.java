@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -48,5 +47,10 @@ public class Role implements GrantedAuthority {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
