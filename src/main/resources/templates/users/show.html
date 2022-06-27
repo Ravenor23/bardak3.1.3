@@ -2,38 +2,94 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Show</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Index</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    .height-full {
+      height: 100vh;
+    }
+    .custom-font {
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
 <body>
-<div>
-  <table>
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Age</th>
-      <th>Username</th>
-      <th>Password</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td th:text="${user.getId()}"></td>
-      <td th:text="${user.getName()}"></td>
-      <td th:text="${user.getLastname()}"></td>
-      <td th:text="${user.getAge()}"></td>
-      <td th:text="${user.getUsername()}"></td>
-      <td th:text="${user.getPassword()}"></td>
-      <td><a th:href="@{/admin/user-delete/{id}(id=${user.getId()})}">Delete</a></td>
-      <td><a th:href="@{/admin/user-update/{id}(id=${user.getId()})}">Edit</a></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<a th:href="@{/logout}">Logout</a>
-<!--<form th:method="DELETE" th:action="@{/users/delete/{id}(id=${user.getId()})}">
-  <input type="submit" value="Delete"/>
-</form>-->
+
+<!--Navbar-->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-around">
+    <div class="container-fluid">
+      <h3 class="text-white" th:utext="${user.getUsername()} + ' has roles: ' + ${user.getRolesToString()}"></h3>
+      <a href="/logout" class="btn btn-info" role="button">Logout</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="container-fluid justify-content-start bg-light">
+
+    <!--Sidebar-->
+
+    <div class="row d-flex height-full">
+      <div class="col-md-2 bg-white">
+        <div id="sidebar" class="sidebar-sticky flex-column">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link mt-3" href="#user">User</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <!--Upper menu-->
+
+      <div class="col-md-10 bg-light height-full">
+        <div data-spy="scroll" data-target="#sidebar" data-offset="0">
+          <h1 id="user" class="my-4 pl-2">User information-page</h1>
+        </div>
+
+        <!--Main table-->
+        <div class="container-fluid bg-light border mx-1">
+          <div class="row">
+            <div class="col">
+              <h2 class="my-3 pl-4">About user</h2>
+            </div>
+          </div>
+          <div class="container-fluid bg-white mx-1 border d-flex">
+            <table class="table table-striped table-hover" title="All users">
+                    <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                      <th>Age</th>
+                      <th>Username</th>
+                      <th>Roles</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td th:text="${user.getId()}"></td>
+                      <td th:text="${user.getName()}"></td>
+                      <td th:text="${user.getLastname()}"></td>
+                      <td th:text="${user.getAge()}"></td>
+                      <td th:text="${user.getUsername()}"></td>
+                      <td th:text="${user.getRolesToString()}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+</main>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

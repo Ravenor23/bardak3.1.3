@@ -10,6 +10,25 @@
   html,body{
     height:100%;
   }
+  .height-full {
+    height: 100vh;
+  }
+  .pill-nav a {
+    display: block;
+    color: black;
+  }
+
+  /* Change the color of links on mouse-over */
+  .pill-nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  /* Add a color to the active/current link */
+  .pill-nav a.active {
+    background-color: dodgerblue;
+    color: white;
+  }
 </style>
 <body>
    <!--Navbar-->
@@ -24,47 +43,51 @@
 
 <!--Main container-->
 <main>
+
   <div class="container-fluid justify-content-start bg-light">
 
     <!--Sidebar-->
-
     <div class="row d-flex">
       <div class="col-md-2 bg-white">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="/admin">Admin</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/user">User</a>
-            </li>
-          </ul>
+
+        <div class="nav pill-nav nav-pills nav-justified flex-column" id="pills-tab" role="tablist">
+          <a id="admin-tab" class="nav-link mt-3 active flex-fill" role="tab" href="/admin" aria-selected="true">Admin</a>
+          <a id="user-tab" class="nav-link flex-fill" role="tab" href="/admin/user" aria-selected="false">User</a>
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane active" id="admin" role="tabpanel" aria-labelledby="admin-tab-tab"></div>
+          <div class="tab-pane" id="user" role="tabpanel" aria-labelledby="user-tab"></div>
         </div>
       </div>
 
+
+
+
        <!--Upper menu-->
 
-      <div class="col-md-10 bg-light">
-        <h1 class="mt-3">Admin panel</h1>
-        <div class="row d-flex">
-          <div class="col-1  mt-3">
-            <a href="/admin">Users table</a>
-          </div>
-          <div class="col-1  mt-3">
-            <a href="/admin/user-create">New user</a>
-          </div>
+      <div class="col-md-10 bg-light height-full">
+        <h1 class="p-2">Admin panel</h1>
+        <div class="row d-flex no-gutters">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active " href="/admin">Users table</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/user-create">New User</a>
+            </li>
+          </ul>
         </div>
-        
-        <hr>
-         <!--Main table-->
-        <!--<h3 class="ml-3">All users</h3>-->
 
-        <div class="container-fluid bg-light border mx-1">
+
+           <!--Main table-->
+
+        <div class="container-fluid bg-light border">
           <header class="header col-md">
             <h2 class="my-2 pl-2">All users</h2>
           </header>
-          <div class="container-fluid bg-white mx-1 border d-flex">
-            <table class="table table-striped table-hover" title="All users">
+          <div class="container-fluid bg-white border d-flex">
+            <table class="table table-striped table-hover" id="table" title="All users">
               <thead>
               <tr>
                 <th scope="col">Id</th>
@@ -85,69 +108,15 @@
                 <td id="age" th:text="${user.getAge()}"></td>
                 <td id="username" th:text="${user.getUsername()}"></td>
                 <td id="roles" th:text="${user.getRolesToString()}"></td>
-                <td><a class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
-                <td><a class="btn btn-secondary" data-toggle="modal" data-target="#editModal">Edit</a></td>
+                <td><a class="btn btn-danger delBtn" th:href="@{/admin/user-delete/{id}(id=${user.getId()})}"> <!--data-toggle="modal" data-target="#deleteModal"-->Delete</a></td>
+                <td><a class="btn btn-secondary eBtn" th:href="@{/admin/findOne/(id=${user.id})}"> <!--data-toggle="modal" data-target="#editModal"-->Edit</a></td>
+              </tr>
+              </tbody>
+            </table>
 
-                <!--Delete modal-->
-
-                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div id="modal_body" class="modal-body">
-
-                        <form action="#" method="post">
-
-                          <div class="form-group col-md-12">
-                            <div class="p-2 bd-highlight">
-                              <label class="font-weight-bold custom-font mt-2" for="name_modal">Enter name: </label>
-                              <input type="text" class="form-control" th:field  id="name_modal" readonly/>
-                            </div>
-                          </div>
-
-                          <div class="form-group col-md-12">
-                            <div class="p-2 bd-highlight">
-                              <label class="font-weight-bold custom-font" for="lastname_modal">Enter lastname: </label>
-                              <input type="text" class="form-control" id="lastname_modal" readonly/>
-                            </div>
-                          </div>
-
-                          <div class="form-group col-md-12">
-                            <div class="p-2 bd-highlight">
-                              <label class="font-weight-bold custom-font" for="age_modal">Enter age: </label>
-                              <input type="number" class="form-control" id="age_modal" readonly/>
-                            </div>
-                          </div>
-
-                          <div class="form-group col-md-12">
-                            <div class="p-2 bd-highlight"></div>
-                            <label class="font-weight-bold custom-font" for="username_modal">Enter username: </label>
-                            <input type="text" class="form-control" id="username_modal" readonly/>
-                          </div>
-
-
-                          <!--<div class="form-group col-md-12">
-                            <div class="p-2 bd-highlight"></div>
-                            <label class="font-weight-bold custom-font" for="password_modal">Enter password: </label>
-                            <input type="text" class="form-control" th:field="${user.getPassword()}" id="password_modal" readonly/>
-                          </div>-->
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a class="btn btn-danger" th:href="@{/admin/user-delete/{id}(id=${user.getId()})}">Delete</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!--Edit user-->
-
+            <!--Edit user-->
+            <div class="edit">
+              <form id="edit_form" method="POST" th:action="@{/admin/user-update}">
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -158,42 +127,127 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        ...
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="id_editModal">ID</label>
+                          <input type="text" class="form-control" name="id" id="id_editModal" readonly/>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="name_editModal">First name</label>
+                          <input type="text" class="form-control" name="name" id="name_editModal"/>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="lastname_editModal">Last name</label>
+                          <input type="text" class="form-control" name="lastname" id="lastname_editModal"/>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="age_editModal">Age</label>
+                          <input type="number" class="form-control" name="age" id="age_editModal"/>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="username_editModal">Username</label>
+                          <input type="text" class="form-control" name="username" id="username_editModal"/>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <label class="font-weight-bold" for="password_editModal">Password</label>
+                          <input type="text" class="form-control" name="password" id="password_editModal"/>
+                        </div>
+
+                        <div class="form-group text-center ">
+                          <label class="font-weight-bold custom-font" for="roles_editModal">Roles</label>
+                          <select class="custom-select" id="roles_editModal" name="roles" size="2" multiple>
+                            <option disabled value="ADMIN">Admin</option>
+                            <option disabled value="USER">User</option>
+                          </select>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a class="btn btn-danger" th:href="@{/admin/user-update/{id}(id=${user.getId()})}">Edit</a>
+                        <button type="submit" class="btn btn-primary" form="edit_form">Edit</button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </tr>
-              </tbody>
-            </table>
+              </form>
+            </div>
+
+
+            <!--Delete modal-->
+            <form id="delete_form" method="GET">
+              <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div id="modal_body" class="modal-body">
+                      <div class="form-group text-center">
+                        <label class="font-weight-bold" for="id_deleteModal" a>ID</label>
+                        <input type="text" class="form-control" id="id_deleteModal" readonly/>
+                      </div>
+
+                      <div class="form-group text-center">
+                        <label class="font-weight-bold" for="name_deleteModal">First name</label>
+                        <input type="text" class="form-control" id="name_deleteModal" readonly/>
+                      </div>
+
+                      <div class="form-group text-center">
+                        <label class="font-weight-bold" for="lastname_deleteModal">Last name</label>
+                        <input type="text" class="form-control" id="lastname_deleteModal" readonly/>
+                      </div>
+
+                      <div class="form-group text-center">
+                        <label class="font-weight-bold" for="age_deleteModal">Age</label>
+                        <input type="number" class="form-control" id="age_deleteModal" readonly/>
+                      </div>
+
+                      <div class="form-group text-center">
+                        <label class="font-weight-bold" for="username_deleteModal">Username</label>
+                        <input type="text" class="form-control" id="username_deleteModal" readonly/>
+                      </div>
+
+                      <div class="form-group text-center ">
+                        <label class="font-weight-bold custom-font" for="roles_deleteModal">Roles</label>
+                        <select class="custom-select" id="roles_deleteModal" size="2" multiple>
+                          <option disabled value="ADMIN">Admin</option>
+                          <option disabled value="USER">User</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="delRef" class="btn btn-danger" form="delete_form">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </form>
 
           </div>
         </div>
-        </div>
+      </div>
     </div>
   </div>
-
 </main>
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-   <script type="text/javascript">
-     $(document).ready(function() {
-       $('#submitBtn').click(function () {
-         $("#name_modal").html($("#name").val());
-         $("#lastname_modal").html($("#lastname").val());
-         $("#age_modal").html($("#age").val());
-         $("#username_modal").html($("#username").val());
-       });
-     });
-   </script>
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+           type="text/javascript"></script>
+   <script crossorigin="anonymous"
+           integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+           src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" type="text/javascript"></script>
+   <script crossorigin="anonymous"
+           integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+           src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+   <script crossorigin="anonymous" src="../static/main.js" th:src="@{/main.js}"
+           type="text/javascript"></script>
 </body>
 </html>

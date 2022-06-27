@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -37,6 +38,14 @@ public class UserController {
         return "users/show";
     }
 
+    @GetMapping("/admin/user")
+    public String showAdminInfo(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        model.addAttribute("user", user);
+        return "users/adminShow";
+    }
+
     @GetMapping("/admin/user/{id}")
     public String showUserById(@PathVariable("id") Long id, Model model) {
         model.addAttribute(userService.findById(id));
@@ -50,6 +59,7 @@ public class UserController {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("admin", admin);
+        model.addAttribute("userService", userService);
         return "users/index";
     }
 
@@ -82,5 +92,11 @@ public class UserController {
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/admin/";
+    }
+
+    @GetMapping("/admin/findOne")
+    @ResponseBody
+    public User findOne(Long id) {
+        return userService.findById(id);
     }
 }
