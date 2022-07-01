@@ -89,14 +89,9 @@ public class UserController {
     }
 
     @GetMapping("/admin/user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteById(id);
+    public String deleteUser(@PathVariable("id") String id) {
+        userService.deleteById(Long.parseLong(id));
         return "redirect:/admin/";
     }
 
-    @GetMapping("/admin/findOne")
-    @ResponseBody
-    public User findOne(Long id) {
-        return userService.findById(id);
-    }
 }
