@@ -18,4 +18,6 @@ public interface UserService {
     public UserDetails loadUserByUsername(String string);
 
     public User findByUsername(String username);
+
+    User updateUser(User user, Long id);
 }

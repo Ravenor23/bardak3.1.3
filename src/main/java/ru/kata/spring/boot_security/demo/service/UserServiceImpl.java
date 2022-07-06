@@ -40,25 +40,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        User updatedUser = findByUsername(user.getUsername());
-        if (updatedUser == null) {
-            return userDao.save(user);
-        }
-        updatedUser.setPassword(user.getPassword());
-        updatedUser.setUsername(user.getUsername());
-        updatedUser.setAge(user.getAge());
-        updatedUser.setLastname(user.getLastname());
+        return userDao.save(user);
+    }
+
+    @Override
+    public User updateUser(User user, Long id) {
+        User updatedUser = findById(id);
         updatedUser.setName(user.getName());
-
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleDao.getById(2L));
-        if (Roles.ADMIN.equalsName(user.getRolesToString())) {
-            roles.add(roleDao.getById(1L));
-        }
-        user.setRoles(roles);
-
+        updatedUser.setLastname(user.getLastname());
+        updatedUser.setAge(user.getAge());
+        updatedUser.setUsername(user.getUsername());
+        updatedUser.setPassword(user.getPassword());
+        updatedUser.setRoles(user.getRoles());
         return userDao.save(updatedUser);
     }
+
 
     @Override
     public void deleteById(Long id) {
