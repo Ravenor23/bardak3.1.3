@@ -64,12 +64,14 @@ public class UserController {
     }
 
     @PostMapping("/admin/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") User user, Model model) {
+    public String updateUserForm(@PathVariable("id") Long id) {
         /*User user = userService.findById(id);
         model.addAttribute("user", user);
         return "users/edit";*/
 
-        userService.updateUser(user, user.getId());
+        User user = userService.findById(id);
+
+        User updatedUser = new User();
         return "redirect:/admin";
     }
 
