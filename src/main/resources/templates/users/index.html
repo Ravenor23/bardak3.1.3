@@ -107,7 +107,7 @@
                 <td id="lastname" th:text="${user.getLastname()}"></td>
                 <td id="age" th:text="${user.getAge()}"></td>
                 <td id="username" th:text="${user.getUsername()}"></td>
-                <td id="roles" data-th-text="${user.getRolesToString()}"></td>
+                <td data-th-text="${user.getRolesToString()}"></td>
                 <td><button type="button" class="btn btn-danger delBtn" data-toggle="modal" th:attr="data-target='#deleteModal' + ${user.getId()}">Delete</button></td>
                 <td><button type="button" class="btn btn-secondary eBtn" data-toggle="modal" th:attr="data-target='#editModal' + ${user.getId()}">Edit</button></td>
 
@@ -180,44 +180,45 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form id="edit_form" method="post" th:method="POST" th:action="@{/admin/user-update/{id}(id=${user.getId()})}">
+                        <form id="edit_form" action="#" th:object="${user}" method="POST" th:action="@{/admin/user-update/}">
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="id_editModal">ID</label>
-                            <input type="text" th:value="${user.getId()}" class="form-control" id="id_editModal" readonly/>
+                            <input type="text" name="id" th:value="*{id}" class="form-control" id="id_editModal" readonly/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="name_editModal">First name</label>
-                            <input type="text" class="form-control" th:value="${user.getName()}" id="name_editModal"/>
+                            <input type="text" name="name" class="form-control" th:value="*{name}" id="name_editModal"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="lastname_editModal">Last name</label>
-                            <input type="text" class="form-control" th:value="${user.getLastname()}" id="lastname_editModal"/>
+                            <input type="text" name="lastname" class="form-control" th:value="*{lastname}" id="lastname_editModal"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="age_editModal">Age</label>
-                            <input type="number" class="form-control" th:value="${user.getAge()}" id="age_editModal"/>
+                            <input type="number" name="age" class="form-control" th:value="*{age}" id="age_editModal"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="username_editModal">Username</label>
-                            <input type="text" class="form-control" th:value="${user.getUsername()}" id="username_editModal"/>
+                            <input type="text" name="username" class="form-control" th:value="*{username}" id="username_editModal"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="password_editModal">Password</label>
-                            <input type="text" class="form-control" th:value="${user.getPassword()}" id="password_editModal"/>
+                            <input type="text" class="form-control" name="password" th:value="*{password}" id="password_editModal"/>
                           </div>
 
-                          <!--<div class="form-group text-center ">
-                            <label class="font-weight-bold custom-font" for="roles_editModal">Roles</label>
-                            <select class="custom-select" id="roles_editModal" name="roles" size="2" multiple>
-                              <option disabled value="ADMIN">Admin</option>
-                              <option disabled value="USER">User</option>
+                          <div class="form-group text-center ">
+                            <label class="font-weight-bold custom-font" for="roles_deleteModal">Roles</label>
+                            <select class="custom-select" id="roles_editModal" name="roles" multiple>
+                              <option value="1">Admin</option>
+                              <option value="2">User</option>
                             </select>
-                          </div>-->
+                          </div>
+
                           <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Close</button>
                             <button type="submit" formmethod="post" class="btn btn-primary">Edit</button>

@@ -1,14 +1,13 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -63,15 +62,9 @@ public class UserController {
         return "users/index";
     }
 
-    @PostMapping("/admin/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id) {
-        /*User user = userService.findById(id);
-        model.addAttribute("user", user);
-        return "users/edit";*/
-
-        User user = userService.findById(id);
-
-        User updatedUser = new User();
+    @PostMapping("/admin/user-update/")
+    public String updateUserForm(@ModelAttribute("user") User user, @RequestParam(value="roles") List<Role> roles) {
+        userService.updateUser(user, user.getId());
         return "redirect:/admin";
     }
 
@@ -84,12 +77,13 @@ public class UserController {
 
     @GetMapping("/admin/user-create")
     public String createUserForm(User user, Model model) {
+
         model.addAttribute("admin", admin);
         return "users/saveUser";
     }
 
     @PostMapping("/admin/user-create")
-    public String createUser(User user) {
+    public String createUser(User user, @RequestParam(value = "roles") List<Role> roles) {
         userService.saveUser(user);
         return "redirect:/admin/";
     }
