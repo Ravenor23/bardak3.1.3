@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface UserService {
 
-    public User findById(Long id);
+    User findById(Long id);
 
-    public List<User> findAll();
+    List<User> findAll();
 
-    public User saveUser(User user);
+    User saveUser(User user);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
 
-    public UserDetails loadUserByUsername(String string);
+    UserDetails loadUserByUsername(String string);
 
-    public User findByUsername(String username);
+    User findByUsername(String username);
 
     User updateUser(User user, Long id);
 }

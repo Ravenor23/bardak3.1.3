@@ -125,7 +125,7 @@
 
                         <form id="delete_form" method="POST" th:action="@{/admin/user-delete/{id}(id=${user.getId()})}">
                           <div class="form-group text-center">
-                            <label class="font-weight-bold" for="id_deleteModal" a>ID</label>
+                            <label class="font-weight-bold" for="id_deleteModal">ID</label>
                             <input type="text" class="form-control" th:value="${user.getId()}" id="id_deleteModal" readonly/>
                           </div>
 
@@ -180,7 +180,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form id="edit_form" action="#" th:object="${user}" method="POST" th:action="@{/admin/user-update/}">
+                        <form id="edit_form" th:object="${user}">
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="id_editModal">ID</label>
                             <input type="text" name="id" th:value="*{id}" class="form-control" id="id_editModal" readonly/>
@@ -188,32 +188,32 @@
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="name_editModal">First name</label>
-                            <input type="text" name="name" class="form-control" th:value="*{name}" id="name_editModal"/>
+                            <input type="text" name="name" class="form-control" th:value="*{name}" id="name_editModal" required aria-required="true"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="lastname_editModal">Last name</label>
-                            <input type="text" name="lastname" class="form-control" th:value="*{lastname}" id="lastname_editModal"/>
+                            <input type="text" name="lastname" class="form-control" th:value="*{lastname}" id="lastname_editModal" required aria-required="true"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="age_editModal">Age</label>
-                            <input type="number" name="age" class="form-control" th:value="*{age}" id="age_editModal"/>
+                            <input type="number" name="age" class="form-control" th:value="*{age}" id="age_editModal" required aria-required="true"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="username_editModal">Username</label>
-                            <input type="text" name="username" class="form-control" th:value="*{username}" id="username_editModal"/>
+                            <input type="text" name="username" class="form-control" th:value="*{username}" id="username_editModal" required aria-required="true"/>
                           </div>
 
                           <div class="form-group text-center">
                             <label class="font-weight-bold" for="password_editModal">Password</label>
-                            <input type="text" class="form-control" name="password" th:value="*{password}" id="password_editModal"/>
+                            <input type="text" class="form-control" name="password" th:value="*{password}" id="password_editModal" required aria-required="true"/>
                           </div>
 
                           <div class="form-group text-center ">
-                            <label class="font-weight-bold custom-font" for="roles_deleteModal">Roles</label>
-                            <select class="custom-select" id="roles_editModal" name="roles" multiple>
+                            <label class="font-weight-bold custom-font" for="roles_editModal">Roles</label>
+                            <select class="custom-select" th:value="*{roles}" id="roles_editModal" name="roles" multiple>
                               <option value="1">Admin</option>
                               <option value="2">User</option>
                             </select>
@@ -221,7 +221,7 @@
 
                           <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Close</button>
-                            <button type="submit" formmethod="post" class="btn btn-primary">Edit</button>
+                            <button type="submit" id="submitEdit" class="btn btn-primary">Edit</button>
                           </div>
                         </form>
 
@@ -255,42 +255,18 @@
    <script crossorigin="anonymous"
            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
-   <!--<script>
-     $(document).ready(function(){
-       $("#table").on('click','.eBtn',function(){
-         let currentRow=$(this).closest("tr");
-         document.getElementById("id_editModal").value = currentRow.find("td:eq(0)").text();
-         document.getElementById("name_editModal").value = currentRow.find("td:eq(1)").text();
-         document.getElementById("lastname_editModal").value = currentRow.find("td:eq(2)").text();
-         document.getElementById("age_editModal").value = currentRow.find("td:eq(3)").text();
-         document.getElementById("username_editModal").value = currentRow.find("td:eq(4)").text();
-         /*document.getElementById("roles_editModal").value = currentRow.find("td:eq(5)").text();*/
-       });
+  <script>
+    function show() {
+      const roles = document.getElementById("roles_editModal")
+      console.log(roles)
+    }
 
-       $("#table").on('click','.delBtn',function(){
-         let currentRow=$(this).closest("tr");
-         /*let smbButton = document.querySelector("#sbmDel");
-         smbButton.setAttribute("href", "@{/admin/user-delete/{id}(id=id)}");*/
-
-         let user = {
-           id : currentRow.find("td:eq(0)").text(),
-           name : currentRow.find("td:eq(1)").text(),
-           lastname: currentRow.find("td:eq(2)").text(),
-           age: currentRow.find("td:eq(3)").text(),
-           username: currentRow.find("td:eq(4)").text()
-         }
-
-         $("#delete_form").data("user", user);
-
-         console.log(user.id)
-
-         $("#id_deleteModal").val(user.id)
-         $("#name_deleteModal").val(user.name)
-         $("#lastname_deleteModal").val(user.lastname)
-         $("#age_deleteModal").val(user.age)
-         $("#username_deleteModal").val(user.username)
-       });
-     });
-   </script>-->
+    $(document).ready(() => {
+      const edit = document.getElementById("submitEdit")
+      edit.addEventListener("click", () => {
+        show()
+      })
+    })
+  </script>
 </body>
 </html>
